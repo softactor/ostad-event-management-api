@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     public function memberRegistration(Request $request){
+
         $validation = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|confirmed|min:6',
-            'role' => 'required',
             'profile_image' => 'nullable',
         ]);
 
@@ -35,7 +35,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'role' => 'user',
             'password' => Hash::make($request->password),
             'profile_image' => $profile_image,
         ]);
