@@ -15,4 +15,13 @@ class EventsController extends Controller
             'data'=> $events,
         ], 200);
     }
+
+
+    public function getEvent(Event $event) {
+        return response()->json([
+            'status'=> true,
+            'message'=> 'Event data',
+            'data'=> $event,
+        ], 200);
+    }
 }

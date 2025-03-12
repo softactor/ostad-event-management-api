@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
+use App\Mail\RegistrationConfirmationMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -16,7 +18,8 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|confirmed|min:6',
-            'profile_image' => 'nullable',
+            'password_confirmation' => 'required',
+            'profile_image' => 'nullable|mime:png,jpg|max-size:2048',
         ]);
 
         if($validation->fails()){
@@ -29,7 +32,10 @@ class AuthController extends Controller
 
         $profile_image = null;
         if($request->hasFile('profile_image')){
-            $profile_image = $request->file('profile_image')->store('profile_images');
+            $image = $request->file('profile_image');
+            $image_name = 'profile_image_'.time().$image->getClientOriginalExtension();
+            $image->storeAs('profile_image', $image_name);
+            $profile_image = 'storage/profile_image/'.$image_name;
         }
 
         $user = User::create([
@@ -41,6 +47,10 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        // send registeration confirm mail
+
+        Mail::to($user->email)->send(new RegistrationConfirmationMail($user));
         
         return response()->json([
             'status'=> true,
