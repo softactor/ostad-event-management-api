@@ -40,8 +40,10 @@ Route::put('/update-user/{id}', [UsersController::class, 'updateUser']);
 // delete user:
 Route::delete('/delete-user/{id}', [UsersController::class, 'deleteUser']);
 
+Route::post('/event', [EventsController::class, 'store']);
 Route::get('/events', [EventsController::class, 'events']);
 Route::get('/event/{event}', [EventsController::class, 'getEvent']);
+Route::put('/event/update/{id}', [EventsController::class, 'updateEvent']);
 
 /****************
  * Bookings
@@ -50,4 +52,5 @@ Route::get('/event/{event}', [EventsController::class, 'getEvent']);
 
 // get all bookings:
 Route::get('/bookings', [BookingsController::class, 'getAllbookings']);
+Route::post('/member-event-booking', [BookingsController::class, 'store']);
 
