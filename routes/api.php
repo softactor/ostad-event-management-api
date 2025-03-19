@@ -52,5 +52,10 @@ Route::put('/event/update/{id}', [EventsController::class, 'updateEvent']);
 
 // get all bookings:
 Route::get('/bookings', [BookingsController::class, 'getAllbookings']);
+Route::get('/booking/{id}', [BookingsController::class, 'getBooking']);
 Route::post('/member-event-booking', [BookingsController::class, 'store']);
+Route::get('/member-event-bookings/{id}', [BookingsController::class, 'getMemberbookings']);
+Route::put('/booking/update/{id}', [BookingsController::class, 'updateBooking']);
+
+//booking/update
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BookingStatusUpdateNotification;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +12,19 @@ class BookingsController extends Controller
     public function getAllbookings()
     {
         $bookings = Booking::with(['user', 'event'])->get();
+        return response()->json(['message'=> 'Data found', 'data'=> $bookings]);   
+    }
+    
+    public function getBooking(Request $request)
+    {
+        $booking = Booking::with(['user', 'event'])->where('id', $request->id)->first();
+        return response()->json(['message'=> 'Data found', 'data'=> $booking]);   
+    }
+    
+    
+    public function getMemberbookings(Request $request)
+    {
+        $bookings = Booking::with(['user', 'event'])->where('user_id', $request->id)->get();
         return response()->json(['message'=> 'Data found', 'data'=> $bookings]);   
     }
     
@@ -47,5 +61,29 @@ class BookingsController extends Controller
             'message'=> 'Booking was successfull. Waiting for admin approval',
             'data'=> $booking
         ], 200);
+    }
+
+    public function updateBooking(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'status' => 'required',
+        ]);
+
+        if($validation->fails()){
+            return response()->json([
+                'status'=> false,
+                'message'=> 'validation error',
+                'errors'=> $validation->errors()
+            ], 400);
+        }
+
+        $booking = Booking::findOrFail($request->id);
+
+        $booking->update($request->all());
+
+        $bookingData = Booking::with(['user', 'event'])->where('id', $booking->id)->first();
+
+        event(new BookingStatusUpdateNotification($bookingData));
+
+        return response()->json(['message' => 'update success', 'data' => $booking]);
     }
 }
