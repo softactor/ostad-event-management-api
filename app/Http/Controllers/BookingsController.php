@@ -82,6 +82,8 @@ class BookingsController extends Controller
 
         $bookingData = Booking::with(['user', 'event'])->where('id', $booking->id)->first();
 
+        
+
         event(new BookingStatusUpdateNotification($bookingData));
 
         return response()->json(['message' => 'update success', 'data' => $booking]);

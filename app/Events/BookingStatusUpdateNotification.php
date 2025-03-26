@@ -7,10 +7,11 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class BookingStatusUpdateNotification implements ShouldBroadcast
+class BookingStatusUpdateNotification implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $bookingData;
@@ -30,9 +31,15 @@ class BookingStatusUpdateNotification implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new Channel('booking-channel'),
         ];
     }
+
+    public function broadcastAs(): string
+    {
+        return 'booking-updated';
+    }
+
 
     public function broadcastWith(): array
     {
