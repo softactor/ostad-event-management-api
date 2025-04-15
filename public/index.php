@@ -16,9 +16,9 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 // (require_once __DIR__.'/../bootstrap/app.php')
 //     ->handleRequest(Request::capture());
 
-    // Use environment variables for paths
-require __DIR__.'/'.env('LARAVEL_VENDOR_PATH', '../vendor').'/autoload.php';
-$app = require_once __DIR__.'/'.env('LARAVEL_BOOTSTRAP_PATH', '../bootstrap').'/app.php';
+// Register the Composer autoloader...
+require __DIR__.'/'.(getenv('LARAVEL_VENDOR_PATH') ?: '../vendor').'/autoload.php';
 
 // Bootstrap Laravel and handle the request...
-$app->handleRequest(Request::capture());
+(require_once __DIR__.'/'.(getenv('LARAVEL_BOOTSTRAP_PATH') ?: '../bootstrap').'/app.php')
+    ->handleRequest(Request::capture());
