@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 
 Route::get('/healthcheck', function(){
-    return response()->json(['message' => 'API is working!']);
+    return response()->json(['message' => 'API is working and it was great!']);
 });
 
 Route::post('/member-registration', [AuthController::class, 'memberRegistration']);
