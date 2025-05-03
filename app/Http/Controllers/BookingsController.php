@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Events\BookingStatusUpdateNotification;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+
 
 class BookingsController extends Controller
 {
@@ -85,6 +87,19 @@ class BookingsController extends Controller
         
 
         event(new BookingStatusUpdateNotification($bookingData));
+
+
+        $smsUlr = '';
+        $smsQuery = [
+            'apikey' => '',
+            'secretkey' => '',
+            'callerID' => '',
+            'toUser' => '',
+            'messageContent' => '',
+        ];
+
+        Http::get($smsUlr, $smsQuery);
+
 
         return response()->json(['message' => 'update success', 'data' => $booking]);
     }
