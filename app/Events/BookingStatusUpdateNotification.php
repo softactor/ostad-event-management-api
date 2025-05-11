@@ -31,7 +31,8 @@ class BookingStatusUpdateNotification implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('booking-channel'),
+            // new Channel('booking-channel'),
+            new PrivateChannel('booking-channel.' . $this->bookingData->$user->id),
         ];
     }
 
