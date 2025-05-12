@@ -32,7 +32,7 @@ class BookingStatusUpdateNotification implements ShouldBroadcastNow
     {
         return [
             // new Channel('booking-channel'),
-            new PrivateChannel('booking-channel.' . $this->bookingData->$user->id),
+            new PrivateChannel('booking-channel.' . $this->bookingData->user->id),
         ];
     }
 
