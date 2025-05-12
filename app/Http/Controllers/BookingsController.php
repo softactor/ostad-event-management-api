@@ -89,16 +89,16 @@ class BookingsController extends Controller
         event(new BookingStatusUpdateNotification($bookingData));
 
 
-        $smsUlr = '';
-        $smsQuery = [
-            'apikey' => '',
-            'secretkey' => '',
-            'callerID' => '',
-            'toUser' => '',
-            'messageContent' => '',
-        ];
+        // $smsUlr = '';
+        // $smsQuery = [
+        //     'apikey' => '',
+        //     'secretkey' => '',
+        //     'callerID' => '',
+        //     'toUser' => '',
+        //     'messageContent' => '',
+        // ];
 
-        Http::get($smsUlr, $smsQuery);
+        // Http::get($smsUlr, $smsQuery);
 
 
         return response()->json(['message' => 'update success', 'data' => $booking]);
