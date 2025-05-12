@@ -17,7 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Add middleware for the API group
         $middleware->group('api', [
             BroadcastAuthenticate::class, // Your custom Bearer authentication middleware
-            'throttle:api',  // Default API throttling middleware
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
